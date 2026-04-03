@@ -1,0 +1,130 @@
+@import "tailwindcss";
+
+@theme {
+  --color-bg: #07111f;
+  --color-bg-alt: #0c1728;
+  --color-surface: rgba(10, 19, 34, 0.76);
+  --color-surface-strong: rgba(12, 22, 40, 0.92);
+  --color-surface-soft: rgba(255, 255, 255, 0.06);
+  --color-text-main: #f3f7ff;
+  --color-text-muted: #9fb0cb;
+  --color-line: rgba(255, 255, 255, 0.1);
+  --color-accent: #7cf0cf;
+  --color-accent-strong: #32d7be;
+  --color-accent-warm: #ffd279;
+  --color-accent-cool: #81a8ff;
+  --color-panel: #0d182a;
+  --font-sans: "Manrope", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+}
+
+@layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply min-h-screen bg-bg font-sans text-text-main antialiased;
+    background:
+      radial-gradient(circle at top left, rgba(50, 215, 190, 0.18), transparent 28%),
+      radial-gradient(circle at 85% 12%, rgba(255, 210, 121, 0.14), transparent 24%),
+      linear-gradient(180deg, #07111f 0%, #091425 45%, #050b15 100%);
+    overflow-x: hidden;
+  }
+
+  p,
+  li {
+    @apply text-text-muted;
+  }
+
+  a {
+    @apply transition-colors duration-200;
+  }
+
+  h1,
+  h2,
+  h3,
+  .font-display {
+    font-family: var(--font-display);
+  }
+}
+
+@layer components {
+  .page-shell {
+    @apply mx-auto w-[min(1180px,calc(100vw-2rem))];
+  }
+
+  .glass-panel {
+    @apply relative overflow-hidden rounded-[2rem] border border-line bg-[linear-gradient(180deg,rgba(14,24,42,0.92),rgba(9,16,30,0.8))] shadow-[0_24px_80px_rgba(0,0,0,0.38)];
+  }
+
+  .glass-panel::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), transparent 35%, transparent 70%, rgba(124, 240, 207, 0.07));
+    pointer-events: none;
+  }
+
+  .accent-pill {
+    @apply inline-flex items-center rounded-full border border-white/10 bg-white/5 px-3 py-2 font-display text-[0.78rem] uppercase tracking-[0.16em] text-accent-warm;
+  }
+
+  .button-primary {
+    @apply inline-flex min-h-13 items-center justify-center rounded-full border border-transparent bg-[linear-gradient(135deg,#7cf0cf,#32d7be)] px-6 py-3 font-display text-sm text-[#041117] shadow-[0_16px_36px_rgba(50,215,190,0.22)] transition duration-200 hover:-translate-y-0.5;
+  }
+
+  .button-secondary {
+    @apply inline-flex min-h-13 items-center justify-center rounded-full border border-white/15 bg-white/5 px-6 py-3 font-display text-sm text-text-main transition duration-200 hover:-translate-y-0.5 hover:border-accent/35;
+  }
+
+  .metric-card {
+    @apply rounded-[1.1rem] border border-white/8 bg-white/4 p-4;
+  }
+}
+
+@layer utilities {
+  .text-glow {
+    text-shadow: 0 0 28px rgba(124, 240, 207, 0.18);
+  }
+
+  .bg-hero-panel {
+    background:
+      radial-gradient(circle at top, rgba(124, 240, 207, 0.08), transparent 34%),
+      linear-gradient(180deg, rgba(14, 24, 42, 0.94), rgba(9, 16, 30, 0.84));
+  }
+}
+
+body::before,
+body::after {
+  content: "";
+  position: fixed;
+  pointer-events: none;
+  z-index: -1;
+}
+
+body::before {
+  top: 7rem;
+  right: -8rem;
+  width: 22rem;
+  height: 22rem;
+  border-radius: 9999px;
+  background: radial-gradient(circle, rgba(124, 240, 207, 0.18), transparent 65%);
+  filter: blur(10px);
+}
+
+body::after {
+  left: -6rem;
+  bottom: 10rem;
+  width: 18rem;
+  height: 18rem;
+  border-radius: 9999px;
+  background: radial-gradient(circle, rgba(100, 143, 255, 0.12), transparent 66%);
+  filter: blur(8px);
+}

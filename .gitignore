@@ -1,0 +1,69 @@
+# Dependencies
+node_modules/
+
+# Nuxt / Nitro build outputs
+.nuxt/
+.output/
+.data/
+.nitro/
+.cache/
+dist/
+
+# Test outputs
+coverage/
+.nyc_output/
+playwright-report/
+test-results/
+vitest-report/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Environment files
+.env
+.env.*
+!.env.example
+!.env.sample
+
+# TypeScript
+*.tsbuildinfo
+
+# Package manager / tool caches
+.npm/
+.pnpm-store/
+.yarn/
+.bun/
+.parcel-cache/
+.vite/
+.turbo/
+
+# IDE / editor files
+.idea/
+.vscode/
+.fleet/
+*.code-workspace
+
+# OS / filesystem noise
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Local temporary files
+tmp/
+temp/
+*.tmp
+*.bak
+*.swp
+*.swo
+
+# Optional local databases and runtime artifacts
+*.pid
+*.seed
+*.sqlite
+*.sqlite3
