@@ -24,7 +24,14 @@
     "nuxt": "^4.4.2",
     "vue": "^3.5.31"
   },
+  "overrides": {
+    "@emnapi/core": "1.9.2",
+    "@emnapi/runtime": "1.9.2",
+    "crossws": "0.4.4"
+  },
   "devDependencies": {
+    "@emnapi/core": "1.9.2",
+    "@emnapi/runtime": "1.9.2",
     "eslint": "^9.38.0",
     "@nuxt/test-utils": "^4.0.0",
     "@playwright/test": "^1.59.1",
