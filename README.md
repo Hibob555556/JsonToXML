@@ -1,23 +1,26 @@
 # TypescriptAutodoc
 
-A Nuxt 4 app with a styled homepage, a Dragon Editor workspace at `/editor`, Tailwind-based theming, unit tests, and GitHub Actions CI.
+A Nuxt 4 application for submitting TypeScript files to an auto-documentation workflow. The intended backend flow is:
+
+- upload a TypeScript file
+- analyze the file for docstrings
+- identify classes, methods, functions, and related symbols
+- return a generated `.md` file containing the extracted documentation
+
+The current frontend is centered around a submit route at `/submit`, rendered from the Nuxt 4 `app/` directory structure.
 
 ## Stack
 
 - Nuxt 4
 - Vue 3
 - TypeScript
-- Dragon Editor
-- Tailwind CSS 4
 - Vitest
 - Playwright
-- Husky
 
 ## Requirements
 
-- Node.js 20.20+ is supported locally
-- Node.js 22 is also a good choice for CI to reduce engine warnings from transitive tooling
-- npm is the expected package manager because `package-lock.json` is committed
+- Node.js 20 or newer is recommended for current Nuxt 4 tooling
+- npm is the expected package manager in this repository because `package-lock.json` is committed
 
 ## Getting Started
 
@@ -27,22 +30,17 @@ Install dependencies:
 npm install
 ```
 
-Start the development server:
+Run the development server:
 
 ```bash
 npm run dev
 ```
 
-Nuxt usually starts on `http://localhost:3000`. If that port is busy, it will automatically choose another port.
-
-## Routes
-
-- `/`: styled landing page in [app/pages/index.vue](./app/pages/index.vue)
-- `/editor`: Dragon Editor page in [app/pages/editor/index.vue](./app/pages/editor/index.vue)
+Nuxt will usually start on `http://localhost:3000`. If that port is already in use, it will automatically choose another one such as `http://localhost:3001`.
 
 ## Available Scripts
 
-### App
+### App lifecycle
 
 ```bash
 npm run dev
@@ -53,13 +51,12 @@ npm run generate
 
 - `npm run dev`: start the local development server
 - `npm run build`: create a production build
-- `npm run preview`: preview the production build
+- `npm run preview`: preview the production build locally
 - `npm run generate`: generate a static build when applicable
 
-### Quality
+### Testing
 
 ```bash
-npm run lint
 npm run test
 npm run test:watch
 npm run test:coverage
@@ -69,89 +66,81 @@ npm run test:e2e
 npm run test:e2e:ui
 ```
 
-- `npm run lint`: run ESLint
-- `npm run test`: run the unit test suite with [vitest.unit.config.ts](./vitest.unit.config.ts)
-- `npm run test:watch`: run unit tests in watch mode
-- `npm run test:coverage`: run unit tests with coverage
-- `npm run test:unit`: explicit alias for the unit suite
-- `npm run test:nuxt`: run Nuxt-aware tests when present
-- `npm run test:e2e`: run Playwright tests
+- `npm run test`: run Vitest
+- `npm run test:watch`: run Vitest in watch mode
+- `npm run test:coverage`: run Vitest with coverage output
+- `npm run test:unit`: run unit tests from `test/unit`
+- `npm run test:nuxt`: run Nuxt-aware tests from `test/nuxt`
+- `npm run test:e2e`: run Playwright tests from `tests`
 - `npm run test:e2e:ui`: open Playwright UI mode
 
 ## Project Structure
 
 ```text
 .
-|-- .github/
-|   `-- workflows/
-|       `-- ci.yml
-|-- .husky/
-|   `-- pre-commit
 |-- app/
 |   |-- app.vue
-|   |-- assets/
-|   |   `-- css/
-|   |       `-- main.css
 |   `-- pages/
-|       |-- index.vue
-|       `-- editor/
+|       `-- submit/
 |           `-- index.vue
+|-- public/
 |-- test/
+|   |-- nuxt/
 |   `-- unit/
-|       `-- editor-page.test.ts
+|-- tests/
 |-- nuxt.config.ts
 |-- package.json
 |-- playwright.config.ts
-`-- vitest.unit.config.ts
+`-- vitest.config.ts
 ```
 
-## App Layout Notes
+## Routes
 
-This project uses Nuxt 4's `app/` directory structure:
+- `/submit`: file submission page defined in [app/pages/submit/index.vue](./app/pages/submit/index.vue)
 
-- The shared application shell lives in [app/app.vue](./app/app.vue)
-- Route files live under `app/pages/`
-- Tailwind is loaded through [nuxt.config.ts](./nuxt.config.ts) and [app/assets/css/main.css](./app/assets/css/main.css)
+## Nuxt App Layout Notes
 
-If `app/app.vue` renders `<NuxtPage />`, Nuxt expects route components to exist under `app/pages/...`.
+This project uses the Nuxt 4 `app/` directory structure:
 
-## Styling
+- Root application shell lives in [app/app.vue](./app/app.vue)
+- Route components should live under `app/pages/`
+- If `app/app.vue` renders `<NuxtPage />`, Nuxt expects page components to exist in `app/pages/...`
 
-The UI is styled with Tailwind CSS 4 and a shared theme defined in [app/assets/css/main.css](./app/assets/css/main.css).
+If you place route files in a top-level `pages/` directory while also using `app/app.vue`, Nuxt may warn that no page component exists for `<NuxtPage>`.
 
-Current styling direction:
+## Current Submit Page
 
-- dark layered background
-- glass-style panels
-- cyan and warm-gold accent colors
-- shared header/navigation across routes
-- Tailwind utilities for layout and component styling
+The current submit flow is intentionally simple:
 
-## Testing And Git Hooks
+- It accepts a single TypeScript file upload
+- It shows the selected filename and basic file metadata
+- It is a good starting point for wiring backend processing and Markdown download behavior
 
-Unit tests currently cover the editor page in [test/unit/editor-page.test.ts](./test/unit/editor-page.test.ts).
+## Configuration
 
-Pre-commit checks are handled by Husky in [.husky/pre-commit](./.husky/pre-commit), which runs:
+Main project configuration lives in:
 
-```bash
-npm run lint
-npm run test:unit
-```
+- [nuxt.config.ts](./nuxt.config.ts)
+- [vitest.config.ts](./vitest.config.ts)
+- [playwright.config.ts](./playwright.config.ts)
 
-## CI
+Nuxt modules currently configured include:
 
-GitHub Actions CI is defined in [.github/workflows/ci.yml](./.github/workflows/ci.yml).
+- `@nuxt/devtools`
+- `@nuxt/eslint`
 
-It currently runs:
+## Environment Variables
 
-- `npm ci`
-- `npm run lint`
-- `npm run test:unit`
-- `npm run build`
+Local environment files are supported:
 
-If CI fails on dependency sync, regenerate the lockfile with `npm install` and commit the updated `package-lock.json`.
+- `.env`
+- `.env.local`
+- `.env.development`
+- `.env.production`
 
-## Build And Deployment
+Do not commit real secrets. The repository ignores local env files by default.
+
+## Build and Deployment
 
 Create a production build:
 
@@ -159,28 +148,97 @@ Create a production build:
 npm run build
 ```
 
-Preview it locally:
+Preview the production server locally:
 
 ```bash
 npm run preview
 ```
 
-Nuxt writes the production server to `.output/`. After building, you can also run:
+For deployment, use the output generated by Nuxt for your chosen hosting platform. Refer to the Nuxt deployment docs for platform-specific guidance:
+
+- <https://nuxt.com/docs/getting-started/deployment>
+
+## Docker
+
+Build the image:
 
 ```bash
-node .output/server/index.mjs
+docker build -t typescript-autodoc -f dockerfile .
 ```
 
-## Environment Variables
+Run the container:
 
-Local environment files such as `.env` and `.env.local` are supported. Do not commit real secrets.
+```bash
+docker run --rm -p 3000:3000 typescript-autodoc
+```
 
-## Notes Before Committing
+Then open:
 
-- Keep `package-lock.json` in sync with `package.json`
-- Run `npm run lint`
-- Run `npm run test:unit`
-- Run `npm run build` if you changed app or config code
+```text
+http://localhost:3000
+```
+
+This repository should run in Docker as a production Nuxt/Nitro container:
+
+- the image installs dependencies with `npm ci`
+- it builds the app with `npm run build`
+- it starts Nitro with `node .output/server/index.mjs`
+- it binds to `0.0.0.0:3000` so Docker port mapping works correctly
+
+If you need environment variables, pass them at runtime:
+
+```bash
+docker run --rm -p 3000:3000 --env-file .env typescript-autodoc
+```
+
+## Docker Compose
+
+Start the app with Compose:
+
+```bash
+docker compose up --build
+```
+
+Run it in the background:
+
+```bash
+docker compose up --build -d
+```
+
+Stop it:
+
+```bash
+docker compose down
+```
+
+The Compose setup is defined in `compose.yaml` and:
+
+- builds from the local `dockerfile`
+- publishes port `3000`
+- loads variables from `.env`
+
+Then open:
+
+```text
+http://localhost:3000
+```
+
+## Development Notes
+
+- If the app shows the Nuxt welcome screen instead of your route, check [app/app.vue](./app/app.vue) and make sure it renders `<NuxtPage />`
+- If `/submit` does not render, confirm the file exists at `app/pages/submit/index.vue`
+- If the dev server switches ports, use the exact local URL shown in the terminal
+
+## Next Improvements
+
+Good follow-up tasks for this repository:
+
+- Restrict uploads to `.ts` and `.tsx` files
+- Connect the form to a backend upload endpoint
+- Generate and return a `.md` file after docstring analysis
+- Add real unit tests for submission behavior
+- Add end-to-end coverage for the `/submit` flow
+- Document environment variables once auth or API features are wired in
 
 ## License
 

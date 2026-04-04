@@ -11,7 +11,7 @@
 
           <span class="flex flex-col">
             <strong class="font-display text-[0.98rem] tracking-[0.03em] text-text-main">TypescriptAutodoc</strong>
-            <span class="text-sm text-text-muted">Nuxt workspace with Dragon Editor</span>
+            <span class="text-sm text-text-muted">Submit TypeScript and get Markdown docs back</span>
           </span>
         </NuxtLink>
 
@@ -19,8 +19,8 @@
           <NuxtLink to="/" class="relative after:absolute after:-bottom-1.5 after:left-0 after:h-0.5 after:w-full after:origin-left after:scale-x-0 after:rounded-full after:bg-[linear-gradient(90deg,#7cf0cf,transparent)] after:transition hover:after:scale-x-100">
             Home
           </NuxtLink>
-          <NuxtLink to="/editor" class="relative after:absolute after:-bottom-1.5 after:left-0 after:h-0.5 after:w-full after:origin-left after:scale-x-0 after:rounded-full after:bg-[linear-gradient(90deg,#7cf0cf,transparent)] after:transition hover:after:scale-x-100">
-            Editor
+          <NuxtLink to="/submit" class="relative after:absolute after:-bottom-1.5 after:left-0 after:h-0.5 after:w-full after:origin-left after:scale-x-0 after:rounded-full after:bg-[linear-gradient(90deg,#7cf0cf,transparent)] after:transition hover:after:scale-x-100">
+            Submit
           </NuxtLink>
         </nav>
       </div>
